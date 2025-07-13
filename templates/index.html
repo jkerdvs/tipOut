@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tip Out Calculator</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
@@ -10,33 +10,77 @@
         input { width: 100%; padding: 8px; margin: 5px 0; }
         button { padding: 10px; background: blue; color: white; border: none; cursor: pointer; }
         .result { margin-top: 20px; font-size: 18px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 16px;
+            margin: 0 auto;
+            max-width: 450px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            border-bottom: 2px solid #ccc;
+        }
     </style>
 </head>
 <body>
     <h2>Tip Out Calculator</h2>
     <form method="POST">
         <label>Total Tips ($):</label>
-        <input type="number" step="0.01" name="total_tips" required>
-        
+        <input type="number" step="0.01" name="total_tips" required />
+
         <label>Number of Bartenders:</label>
-        <input type="number" name="num_bartenders" required>
-        
+        <input type="number" name="num_bartenders" required />
+
         <label>Number of Barbacks:</label>
-        <input type="number" name="num_barbacks" required>
-        
+        <input type="number" name="num_barbacks" required />
+
         <label>Number of Bouncers:</label>
-        <input type="number" name="num_bouncers" required>
-        
+        <input type="number" name="num_bouncers" required />
+
         <button type="submit">Calculate</button>
     </form>
 
     {% if tip_distribution %}
-        <div class="result">
-            <h3>Results:</h3>
-            <p>Total Tips: ${{ total_tips }}</p>
-            <p>Bartender: ${{ tip_distribution['Bartender'] }}</p>
-            <p>Barback: ${{ tip_distribution['Barback'] }}</p>
-            <p>Bouncer: ${{ tip_distribution['Bouncer'] }}</p>
+        <div class="result" style="margin-top: 30px; font-family: Arial, sans-serif; max-width: 450px; margin-left: auto; margin-right: auto;">
+            <h3 style="font-weight: bold; font-size: 22px; margin-bottom: 15px; text-align: center;">
+                Total Tips: ${{ total_tips }}
+            </h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Number Entered</th>
+                        <th>Per Individual Tip</th>
+                        <th>Total for Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bartender</td>
+                        <td>{{ num_bartenders }}</td>
+                        <td>${{ "%.2f"|format(tip_distribution['Bartender']) }}</td>
+                        <td>${{ "%.2f"|format(tip_distribution['Bartender'] * num_bartenders) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Barback</td>
+                        <td>{{ num_barbacks }}</td>
+                        <td>${{ "%.2f"|format(tip_distribution['Barback']) }}</td>
+                        <td>${{ "%.2f"|format(tip_distribution['Barback'] * num_barbacks) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Bouncer</td>
+                        <td>{{ num_bouncers }}</td>
+                        <td>${{ "%.2f"|format(tip_distribution['Bouncer']) }}</td>
+                        <td>${{ "%.2f"|format(tip_distribution['Bouncer'] * num_bouncers) }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     {% endif %}
 
@@ -45,3 +89,4 @@
     {% endif %}
 </body>
 </html>
+
